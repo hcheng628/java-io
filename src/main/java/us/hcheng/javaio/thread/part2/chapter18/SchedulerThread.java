@@ -1,6 +1,7 @@
 package us.hcheng.javaio.thread.part2.chapter18;
 
-import com.cheng.c18.requests.MethodRequest;
+
+import us.hcheng.javaio.thread.part2.chapter18.requests.MethodRequest;
 
 public class SchedulerThread extends Thread {
 

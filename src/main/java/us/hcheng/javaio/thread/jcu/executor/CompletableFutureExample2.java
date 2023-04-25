@@ -3,8 +3,7 @@ package us.hcheng.javaio.thread.jcu.executor;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
-
-import com.cheng.jcu.ch2.semaphore.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class CompletableFutureExample2 {
 

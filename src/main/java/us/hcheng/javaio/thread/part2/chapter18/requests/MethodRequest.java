@@ -1,7 +1,7 @@
 package us.hcheng.javaio.thread.part2.chapter18.requests;
 
-import com.cheng.c18.Servant;
-import com.cheng.c18.entity.FutureResult;
+import us.hcheng.javaio.thread.part2.chapter18.Servant;
+import us.hcheng.javaio.thread.part2.chapter18.entity.FutureResult;
 
 public abstract class MethodRequest {
 
@@ -14,4 +14,5 @@ public abstract class MethodRequest {
 	}
 
 	public abstract void execute();
+
 }

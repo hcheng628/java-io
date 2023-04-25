@@ -12,4 +12,5 @@ public class RealResult extends Result {
 	public Object getResultValue() {
 		return this.result;
 	}
+
 }

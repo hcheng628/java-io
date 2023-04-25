@@ -1,13 +1,12 @@
 package us.hcheng.javaio.thread.jcu.executor;
 
-import static com.cheng.Util.alwaysOn;
-import static com.cheng.Util.futureInfo;
-import static com.cheng.Util.throwException;
-
+import static us.hcheng.javaio.utils.Util.alwaysOn;
+import static us.hcheng.javaio.utils.Util.futureInfo;
+import static us.hcheng.javaio.utils.Util.throwException;
+import us.hcheng.javaio.utils.SleepUtil;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.cheng.jcu.ch2.semaphore.SleepUtil;
 
 public class CompletableFutureExample5 {
 

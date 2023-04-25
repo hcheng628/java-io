@@ -1,8 +1,8 @@
 package us.hcheng.javaio.thread.part2.chapter18.requests;
 
-import com.cheng.c18.Servant;
-import com.cheng.c18.entity.FutureResult;
-import com.cheng.c18.entity.Result;
+import us.hcheng.javaio.thread.part2.chapter18.Servant;
+import us.hcheng.javaio.thread.part2.chapter18.entity.FutureResult;
+import us.hcheng.javaio.thread.part2.chapter18.entity.Result;
 
 public class MakeStringRequest extends MethodRequest {
 

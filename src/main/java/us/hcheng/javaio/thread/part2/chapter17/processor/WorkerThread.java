@@ -2,7 +2,7 @@ package us.hcheng.javaio.thread.part2.chapter17.processor;
 
 import us.hcheng.javaio.thread.part2.chapter17.Channel;
 import us.hcheng.javaio.thread.part2.chapter17.Request;
-import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class WorkerThread extends Thread {
 

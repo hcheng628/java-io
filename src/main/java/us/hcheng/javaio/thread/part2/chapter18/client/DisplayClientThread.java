@@ -1,6 +1,6 @@
 package us.hcheng.javaio.thread.part2.chapter18.client;
 
-import com.cheng.c18.ActiveObject;
+import us.hcheng.javaio.thread.part2.chapter18.ActiveObject;
 
 public class DisplayClientThread extends Thread {
 	private final ActiveObject fActiveObject;

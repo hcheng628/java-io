@@ -1,6 +1,6 @@
 package us.hcheng.javaio.thread.jcu.atomic.chapter2.lock;
 
-import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

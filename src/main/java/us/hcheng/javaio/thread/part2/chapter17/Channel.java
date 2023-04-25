@@ -1,7 +1,7 @@
 package us.hcheng.javaio.thread.part2.chapter17;
 
 import us.hcheng.javaio.thread.part2.chapter17.processor.WorkerThread;
-import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 
 import java.util.Arrays;
 

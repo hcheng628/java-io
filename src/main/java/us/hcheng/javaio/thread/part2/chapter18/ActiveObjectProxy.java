@@ -1,9 +1,9 @@
 package us.hcheng.javaio.thread.part2.chapter18;
 
-import com.cheng.c18.entity.FutureResult;
-import com.cheng.c18.entity.Result;
-import com.cheng.c18.requests.DisplayStringRequest;
-import com.cheng.c18.requests.MakeStringRequest;
+import us.hcheng.javaio.thread.part2.chapter18.entity.FutureResult;
+import us.hcheng.javaio.thread.part2.chapter18.entity.Result;
+import us.hcheng.javaio.thread.part2.chapter18.requests.DisplayStringRequest;
+import us.hcheng.javaio.thread.part2.chapter18.requests.MakeStringRequest;
 
 public class ActiveObjectProxy implements ActiveObject {
 

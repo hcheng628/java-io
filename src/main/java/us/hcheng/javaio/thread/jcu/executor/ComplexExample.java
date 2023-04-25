@@ -7,8 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import com.cheng.jcu.ch2.semaphore.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class ComplexExample  {
 

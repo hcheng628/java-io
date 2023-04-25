@@ -14,8 +14,8 @@ public class BooleanLockTest {
 							lock.lock(10l);
 						} catch (InterruptedException e) {
 							System.err.println(e);
-						} catch (Lock.TimeoutException e) {
-							System.err.println(e);
+						} catch (Lock.MokaTimeoutException e) {
+							throw new RuntimeException(e);
 						}
 
 						System.out.println(name + " is working... in run...");

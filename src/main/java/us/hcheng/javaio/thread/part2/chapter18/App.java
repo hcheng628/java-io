@@ -1,7 +1,7 @@
 package us.hcheng.javaio.thread.part2.chapter18;
 
-import com.cheng.c18.client.DisplayClientThread;
-import com.cheng.c18.client.MakerClientThread;
+import us.hcheng.javaio.thread.part2.chapter18.client.DisplayClientThread;
+import us.hcheng.javaio.thread.part2.chapter18.client.MakerClientThread;
 
 public class App {
 

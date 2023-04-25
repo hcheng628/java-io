@@ -1,6 +1,6 @@
 package us.hcheng.javaio.thread.part2.chapter18.requests;
 
-import com.cheng.c18.Servant;
+import us.hcheng.javaio.thread.part2.chapter18.Servant;
 
 public class DisplayStringRequest extends MethodRequest {
 	private final String fString;

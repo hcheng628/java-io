@@ -1,6 +1,7 @@
 package us.hcheng.javaio.thread.jcu.atomic.chapter2.semaphore;
 
 import java.util.concurrent.Semaphore;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class SemaphoreExample3 {
 

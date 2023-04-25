@@ -1,7 +1,6 @@
 package us.hcheng.javaio.thread.jcu.executor;
 
-import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
-
+import us.hcheng.javaio.utils.SleepUtil;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

@@ -1,4 +1,4 @@
-package us.hcheng.javaio;
+package us.hcheng.javaio.utils;
 
 import java.util.concurrent.Future;
 

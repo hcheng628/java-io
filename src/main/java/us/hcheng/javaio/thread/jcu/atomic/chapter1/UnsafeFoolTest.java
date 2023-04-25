@@ -2,13 +2,10 @@ package us.hcheng.javaio.thread.jcu.atomic.chapter1;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.cheng.jcu.ch1.entity.CustomObject;
 import sun.misc.Unsafe;
+import us.hcheng.javaio.thread.jcu.atomic.chapter1.entity.CustomObject;
 
 public class UnsafeFoolTest {
 
@@ -49,12 +46,6 @@ public class UnsafeFoolTest {
 		}
 
 		return 0;
-	}
-
-	public static void unsafeLoadClass(Unsafe unsafe) throws Exception {
-		byte[] data = Files.readAllBytes(Paths.get("/Users/hongyu.cheng/Desktop/haha/com/cheng/ch4/app/SimpleObject.class"));
-		Class<?> klass = unsafe.defineAnonymousClass(com.cheng.ch4.app.App.class, data, null);
-		klass.getMethod("hey", null).invoke(klass.getConstructor().newInstance(), null);
 	}
 
 	public static void setObjectFieldValue(Unsafe unsafe) throws Exception {

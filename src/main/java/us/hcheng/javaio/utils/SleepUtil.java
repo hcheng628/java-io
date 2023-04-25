@@ -1,4 +1,4 @@
-package us.hcheng.javaio.thread.part2.chapter17.util;
+package us.hcheng.javaio.utils;
 
 import java.sql.Time;
 import java.util.Random;

@@ -6,8 +6,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
-
-import com.cheng.jcu.ch2.semaphore.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class ExecutorServiceExample2 {
 

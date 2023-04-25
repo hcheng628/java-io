@@ -2,6 +2,7 @@ package us.hcheng.javaio.thread.jcu.atomic.chapter2.semaphore;
 
 import java.util.concurrent.Semaphore;
 import java.util.stream.IntStream;
+import us.hcheng.javaio.utils.SleepUtil;
 
 public class SemaphoreExample1 {
 

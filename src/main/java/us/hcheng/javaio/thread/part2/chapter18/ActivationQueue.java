@@ -1,14 +1,12 @@
 package us.hcheng.javaio.thread.part2.chapter18;
 
 import java.util.LinkedList;
-
-import com.cheng.c18.requests.MethodRequest;
+import us.hcheng.javaio.thread.part2.chapter18.requests.MethodRequest;
 
 public class ActivationQueue {
 
 	private final LinkedList<MethodRequest> fRequests;
 	private static final int MAX_METHOD_REQUEST  = 100;
-
 
 	public ActivationQueue() {
 		this.fRequests = new LinkedList<>();

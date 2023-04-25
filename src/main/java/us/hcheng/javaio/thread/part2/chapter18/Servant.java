@@ -1,9 +1,8 @@
 package us.hcheng.javaio.thread.part2.chapter18;
 
 import java.util.Arrays;
-
-import com.cheng.c18.entity.RealResult;
-import com.cheng.c18.entity.Result;
+import us.hcheng.javaio.thread.part2.chapter18.entity.RealResult;
+import us.hcheng.javaio.thread.part2.chapter18.entity.Result;
 
 public class Servant implements ActiveObject {
 

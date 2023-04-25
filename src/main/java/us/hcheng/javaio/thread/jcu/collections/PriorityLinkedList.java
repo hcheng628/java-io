@@ -1,6 +1,8 @@
 package us.hcheng.javaio.thread.jcu.collections;
 
-import com.cheng.jcu.ch3.collections.entity.EmptyLinkedListException;
+
+import us.hcheng.javaio.thread.jcu.collections.entity.EmptyLinkedListException;
+import us.hcheng.javaio.thread.jcu.collections.entity.Node;
 
 public class PriorityLinkedList<E extends Comparable> {
 

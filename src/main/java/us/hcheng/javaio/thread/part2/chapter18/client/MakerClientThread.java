@@ -1,9 +1,8 @@
 package us.hcheng.javaio.thread.part2.chapter18.client;
 
 import java.util.Random;
-
-import com.cheng.c18.ActiveObject;
-import com.cheng.c18.entity.Result;
+import us.hcheng.javaio.thread.part2.chapter18.ActiveObject;
+import us.hcheng.javaio.thread.part2.chapter18.entity.Result;
 
 public class MakerClientThread extends Thread {
 
