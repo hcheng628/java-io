@@ -1,8 +1,6 @@
 package us.hcheng.javaio.thread.jcu.collections;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,8 @@ import java.util.concurrent.*;
 import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LinkedTransferQueueClientTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class LinkedTransferQueueClientTest {
 
     private static LinkedTransferQueue<Integer> queue;
 
@@ -29,6 +28,7 @@ public class LinkedTransferQueueClientTest {
      * transfer() calls xfer[SYNC]
      */
     @Test
+    @Order(1)
     void insertsTest() throws InterruptedException {
         assertFalse(queue.tryTransfer(1));
 
@@ -116,6 +116,7 @@ public class LinkedTransferQueueClientTest {
     }
 
     @Test
+    @Order(1)
     void sizeTest() throws InterruptedException {
         int size = 10;
         List<Thread> tasks = new ArrayList<>();
