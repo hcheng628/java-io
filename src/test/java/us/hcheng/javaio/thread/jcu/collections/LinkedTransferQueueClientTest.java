@@ -1,7 +1,7 @@
 package us.hcheng.javaio.thread.jcu.collections;
 
 import org.junit.jupiter.api.*;
-import us.hcheng.javaio.thread.part2.chapter17.util.SleepUtil;
+import us.hcheng.javaio.utils.SleepUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
