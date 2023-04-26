@@ -3,191 +3,137 @@ package us.hcheng.javaio.thread.jcu.collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SimpleSkipList {
-	protected final static byte HEAD_BIT = (byte) -1;
-	protected final static byte DATA_BIT = (byte) 0;
-	protected final static byte TAIL_BIT = (byte) 1;
-
-	private final static ThreadLocalRandom RAND = ThreadLocalRandom.current();
-
-	private int size;
-	private int level;
-	private Node head;
-	private Node tail;
-
+	private static final byte HEAD = (byte) -1;
+	private static final byte DATA = (byte) 0;
+	private static final byte TAIL = (byte) 1;
+	private static final ThreadLocalRandom RAND = ThreadLocalRandom.current();
+	private int size, level;
+	private Node head, tail;
 
 	public SimpleSkipList() {
-		this.head = new Node.Builder().setHead().build();
-		this.tail = new Node.Builder().setTail().build();
+		this.head = new Node(HEAD);
+		this.tail = new Node(TAIL);
 		this.head.right = this.tail;
 		this.tail.left = this.head;
+	}
+
+	public boolean isEmpty() {
+		return this.size > 0;
 	}
 
 	public int size() {
 		return this.size;
 	}
 
-	public boolean isEmpty() {
-		return this.size == 0;
+	public boolean contains(int val) {
+		Node n = findClosest(val);
+		return n.value != null && n.value == val;
 	}
 
-	public void add(Integer val) {
-		Node newNode = new Node.Builder().setData().setValue(val).build();
-		Node nearNode = this.findClosed(val);
+	public Node findClosest(int val) {
+		Node curr = this.head;
 
-		newNode.left = nearNode;
-		newNode.right = nearNode.right;
-		nearNode.right = newNode;
+		for (;;)
+			if (curr.right.type != TAIL && curr.right.value <= val)
+				curr = curr.right;
+			else
+				if (curr.down == null)
+					break;
+				else
+					curr = curr.down;
+
+		//System.out.println("findClosest: " + curr + " right: " + curr.right);
+		return curr;
+	}
+
+	public void dumpList() {
+		System.out.println("******************************");
+		Node curr = this.head;
+
+		for (int currLevel = 0;currLevel <= this.level; currLevel++) {
+			Node next = curr.down;
+
+			System.out.print(currLevel + " out of " + this.level + " ");
+			for (; curr.type != TAIL; curr = curr.right)
+				System.out.print(curr + "->");
+			System.out.print(curr);
+			System.out.println();
+
+			curr = next;
+		}
+		System.out.println("******************************\n");
+	}
+
+	public void add(int val) {
+		Node leftNode = this.findClosest(val);
+		Node newNode = new Node(val);
+		newNode.left = leftNode;
+		newNode.right = leftNode.right;
 		newNode.right.left = newNode;
+		leftNode.right = newNode;
 
-		for (int currLevel = 0; currLevel <= this.level; currLevel++) {
-			Node newUpNode = new Node.Builder().setData().setValue(val).build();
-			if (currLevel >= this.level && RAND.nextDouble() < 0.5D) {
-				Node topHead = new Node.Builder().setHead().build();
-				Node topTail = new Node.Builder().setTail().build();
+		int currLevel = 0;
+		for (Node upNewNode; RAND.nextDouble() < 0.3D; newNode = upNewNode) {
+			currLevel++;
+			upNewNode = new Node(val);
+			upNewNode.down = newNode;
+			newNode.up = upNewNode;
 
-				this.head.up = topHead;
-				topHead.down = this.head;
-				this.tail.up = topTail;
-				topTail.down = this.tail;
-				this.head = topHead;
-				this.tail = topTail;
+			if (currLevel > this.level) {
+				Node newHead = new Node(HEAD);
+				newHead.down = this.head;
+				this.head.up = newHead;
 
-				topHead.right = newUpNode;
-				newUpNode.left = topHead;
-				newUpNode.right = topTail;
-				topTail.left = newUpNode;
-				newUpNode.down = newNode;
-				newNode.up = newUpNode;
+				Node newTail = new Node(TAIL);
+				newTail.down = this.tail;
+				this.tail.up = newTail;
+
+				upNewNode.left = newHead;
+				upNewNode.right = newTail;
+				newHead.right = upNewNode;
+				newTail.left = upNewNode;
+
+				this.head = newHead;
+				this.tail = newTail;
 				this.level++;
 				break;
-			} else {
-				Node upLeft = newNode.left.up;
-				if (upLeft != null) {
-					/*
-					System.out.println("newNode.left: " + newNode.left);
-					System.out.println("newNode.left.up: " + newNode.left.up);
-					System.out.println("upLeft.left: " + upLeft.left + " upLeft: " + upLeft + " upLeft.right: " + upLeft.right);
-					*/
-					newUpNode.left = upLeft;
-					newUpNode.right = upLeft.right;
-					upLeft.right = newUpNode;
-					newUpNode.right.left = newUpNode;
-					newUpNode.down = newNode;
-					newNode.up = newUpNode;
-				} else
-					break;
 			}
 
-			newNode = newUpNode;
+			while (leftNode.left != null && leftNode.up == null)
+				leftNode = leftNode.left;
+
+			Node upLeft = leftNode.up;
+			upNewNode.right = upLeft.right;
+			upNewNode.left = upLeft;
+			upLeft.right.left = upNewNode;
+			upLeft.right = upNewNode;
 		}
 
 		this.size++;
 	}
 
-	public Node get(Integer val) {
-		Node n = this.findClosed(val);
-		return n.value == val ? n : null;
-	}
-
-	public boolean contains(Integer val) {
-		Node n = this.findClosed(val);
-		return n.value == val;
-	}
-
-	public Node findClosed(Integer val) {
-		Node curr = this.head;
-
-		while (true) {
-			//System.out.println("NOW CURR: " + curr + " curr.right: " + curr.right + " COMING-VAL: " + val);
-			if (curr.right.type != TAIL_BIT && curr.right.value <= val) {
-				//System.out.println("GOING RIGHT");
-				curr = curr.right;
-			} else {
-				if (curr.down == null)
-					break;
-				else {
-					//System.out.println("GOING DOWN");
-					curr = curr.down;
-
-					//this.dumpSkipList();
-				}
-			}
-		}
-
-		return curr;
-	}
-
-	public void dumpSkipList() {
-		Node currHead = this.head;
-		int l = 0;
-
-		while (currHead != null) {
-			Node nextHead = currHead.down;
-
-			System.out.print("level " + l + " out of " + this.level + " head->");
-			while (currHead.type != TAIL_BIT) {
-				if (currHead.type == DATA_BIT)
-					System.out.print(currHead.value + "->");
-				currHead = currHead.right;
-			}
-			System.out.print("tail\n");
-			currHead = nextHead;
-			l++;
-		}
-	}
-}
-
-class Node {
-	protected Node up, left, down, right;
-	protected Integer value;
-	protected byte type;
-
-	private Node(Builder builder) {
-		this.value = builder.value;
-		this.type = builder.type;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-
-		if (this.type == SimpleSkipList.DATA_BIT)
-			sb.append("DATA[").append(this.value).append("]");
-		else if (this.type == SimpleSkipList.HEAD_BIT)
-			sb.append("HEAD");
-		else
-			sb.append("TAIL");
-
-		return sb.toString();
-	}
-
-	public static class Builder {
+	class Node {
+		private Node up, left, down, right;
 		private Integer value;
 		private byte type;
 
-		public Builder setValue(Integer value) {
+		public Node(int value) {
 			this.value = value;
-			return this;
+			this.type = DATA;
 		}
 
-		public Builder setHead() {
-			this.type = SimpleSkipList.HEAD_BIT;
-			return this;
+		public Node(byte type) {
+			if (type != HEAD && type != TAIL)
+				throw new IllegalArgumentException("Type can only be HEAD or TAIL");
+			this.type = type;
 		}
 
-		public Builder setTail() {
-			this.type = SimpleSkipList.TAIL_BIT;
-			return this;
+		@Override
+		public String toString() {
+			return this.type == DATA ? new StringBuilder().append("DATA[").append(this.value).append("]").toString()
+					: new StringBuilder().append(this.type == HEAD ? "HEAD" : "TAIL").toString();
 		}
 
-		public Builder setData() {
-			this.type = SimpleSkipList.DATA_BIT;
-			return this;
-		}
-
-		public Node build() {
-			return new Node(this);
-		}
 	}
 
 }
