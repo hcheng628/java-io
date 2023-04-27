@@ -33,7 +33,7 @@ public class SimpleSkipList {
 	public Node findClosest(int val) {
 		Node curr = this.head;
 
-		for (;;)
+		for (; ; )
 			if (curr.right.type != TAIL && curr.right.value <= val)
 				curr = curr.right;
 			else
@@ -42,7 +42,6 @@ public class SimpleSkipList {
 				else
 					curr = curr.down;
 
-		//System.out.println("findClosest: " + curr + " right: " + curr.right);
 		return curr;
 	}
 
@@ -65,51 +64,46 @@ public class SimpleSkipList {
 	}
 
 	public void add(int val) {
-		Node leftNode = this.findClosest(val);
 		Node newNode = new Node(val);
-		newNode.left = leftNode;
-		newNode.right = leftNode.right;
-		newNode.right.left = newNode;
-		leftNode.right = newNode;
+		Node leftNode = this.findClosest(val);
+		setLeftAndRight(leftNode, newNode, leftNode.right);
 
-		int currLevel = 0;
-		for (Node upNewNode; RAND.nextDouble() < 0.3D; newNode = upNewNode) {
-			currLevel++;
-			upNewNode = new Node(val);
-			upNewNode.down = newNode;
-			newNode.up = upNewNode;
-
-			if (currLevel > this.level) {
+		for (int currLevel = 0; RAND.nextDouble() < 0.5D; currLevel++) {
+			if (currLevel >= this.level) {
 				Node newHead = new Node(HEAD);
-				newHead.down = this.head;
-				this.head.up = newHead;
-
 				Node newTail = new Node(TAIL);
-				newTail.down = this.tail;
-				this.tail.up = newTail;
+				setUpAndDown(newHead, head);
+				setUpAndDown(newTail, tail);
+				newHead.right = newTail;
+				newTail.left = newHead;
 
-				upNewNode.left = newHead;
-				upNewNode.right = newTail;
-				newHead.right = upNewNode;
-				newTail.left = upNewNode;
-
-				this.head = newHead;
-				this.tail = newTail;
+				head = newHead;
+				tail = newTail;
 				this.level++;
-				break;
 			}
-
 			while (leftNode.left != null && leftNode.up == null)
 				leftNode = leftNode.left;
 
-			Node upLeft = leftNode.up;
-			upNewNode.right = upLeft.right;
-			upNewNode.left = upLeft;
-			upLeft.right.left = upNewNode;
-			upLeft.right = upNewNode;
+			leftNode = leftNode.up;
+			Node currNewNode = new Node(val);
+			setUpAndDown(currNewNode, newNode);
+			setLeftAndRight(leftNode, currNewNode, leftNode.right);
+			newNode = currNewNode;
 		}
 
 		this.size++;
+	}
+
+	private void setUpAndDown(Node up, Node down) {
+		up.down = down;
+		down.up = up;
+	}
+
+	private void setLeftAndRight(Node left, Node mid, Node right) {
+		mid.right = right;
+		mid.left = left;
+		left.right = mid;
+		right.left = mid;
 	}
 
 	class Node {

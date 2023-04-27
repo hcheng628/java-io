@@ -33,6 +33,8 @@ public class SimpleSkipListApp {
 				System.err.println("PART 2: contains issue");
 		});
 
+//		skipList.add(1);
+//		skipList.add(1);
 		skipList.dumpList();
 	}
 
