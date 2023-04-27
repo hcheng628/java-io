@@ -1,4 +1,4 @@
-package us.hcheng.javaio.thread.jcu.concurrent;
+package us.hcheng.javaio.thread.jcu.concurrent.performance;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-public class JDKMapPerformance {
+public class JDKMaps {
 
 	public static void main(String[] args) throws InterruptedException {
 		simulate(new Hashtable<>(), 5, false);
