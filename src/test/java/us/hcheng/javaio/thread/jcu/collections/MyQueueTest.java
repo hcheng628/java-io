@@ -4,35 +4,37 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class MyQueueTest {
+class MyQueueTest {
 
     private static MyQueue<String> queue;
+    private static MyQueue<String> queueSafe;
 
     @BeforeAll
     static void init() {
         queue = new MyQueue<>();
+        queueSafe = new MyQueue<>(true);
     }
 
     @BeforeEach
     void setup() {
-        queue.addLast("Hello");
-        queue.addLast("World");
-        queue.addLast("Java");
+        Stream.of("Hello", "World", "Java").forEach(w ->
+            Stream.of(queue, queueSafe).forEach(q -> q.addLast(w))
+        );
     }
 
     @AfterEach
     void tearDown() {
-        queue.clear();
+        Stream.of(queue, queueSafe).forEach(MyQueue::clear);
     }
 
     @Test
     void removeTest() {
-        Stream.of("Hello", "World", "Java").forEach(w -> assertEquals(w, queue.removeFirst()));
+        Stream.of("Hello", "World", "Java").forEach(w ->
+                Stream.of(queue, queueSafe).forEach(q -> assertEquals(w, q.removeFirst()))
+        );
     }
 
 }

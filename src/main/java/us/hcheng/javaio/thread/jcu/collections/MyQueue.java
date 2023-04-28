@@ -36,8 +36,20 @@ public class MyQueue<E> {
 
     }
 
+
     private int size;
     private Node<E> first, last;
+
+    private final boolean threadSafe;
+    private final Object lock = new Object();
+
+    public MyQueue() {
+        this(false);
+    }
+
+    public MyQueue(boolean threadSafe) {
+        this.threadSafe = threadSafe;
+    }
 
     public int size() {
         return this.size;
@@ -48,6 +60,15 @@ public class MyQueue<E> {
     }
 
     public void addLast(E val) {
+        if (threadSafe)
+            synchronized (lock) {
+                addLast0(val);
+            }
+        else
+            addLast0(val);
+    }
+
+    private void addLast0(E val) {
         Node n = new Node(val);
 
         if (this.size == 0)
@@ -59,6 +80,15 @@ public class MyQueue<E> {
     }
 
     public E removeFirst() {
+        if (threadSafe)
+            synchronized (lock) {
+                return removeFirst0();
+            }
+        else
+            return removeFirst0();
+    }
+
+    private E removeFirst0() {
         if (this.isEmpty())
             return null;
 
@@ -81,8 +111,21 @@ public class MyQueue<E> {
     }
 
     public void clear() {
+        if (threadSafe)
+            synchronized (lock) {
+                clear0();
+            }
+        else
+            clear0();
+    }
+
+    private void clear0() {
         this.first = this.last = null;
         this.size = 0;
+    }
+
+    public boolean isThreadSafe() {
+        return this.threadSafe;
     }
 
 }
