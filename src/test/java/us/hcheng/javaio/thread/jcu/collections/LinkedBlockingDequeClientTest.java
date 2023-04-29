@@ -15,7 +15,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class LinkedBlockingDequeClientTest {
+class LinkedBlockingDequeClientTest {
 
 	private static LinkedBlockingDeque<Integer> queue;
 	private final int SIZE = 10;

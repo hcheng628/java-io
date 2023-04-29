@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import us.hcheng.javaio.thread.jcu.collections.custom.MyQueue;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

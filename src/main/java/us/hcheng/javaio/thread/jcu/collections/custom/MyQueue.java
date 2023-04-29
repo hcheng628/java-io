@@ -1,4 +1,4 @@
-package us.hcheng.javaio.thread.jcu.collections;
+package us.hcheng.javaio.thread.jcu.collections.custom;
 
 public class MyQueue<E> {
 

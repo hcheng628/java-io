@@ -1,4 +1,4 @@
-package us.hcheng.javaio.thread.jcu.collections;
+package us.hcheng.javaio.thread.jcu.collections.custom;
 
 import java.util.concurrent.ThreadLocalRandom;
 

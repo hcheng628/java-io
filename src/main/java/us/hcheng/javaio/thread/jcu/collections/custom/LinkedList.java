@@ -1,19 +1,18 @@
-package us.hcheng.javaio.thread.jcu.collections;
-
+package us.hcheng.javaio.thread.jcu.collections.custom;
 
 import us.hcheng.javaio.thread.jcu.collections.entity.EmptyLinkedListException;
 import us.hcheng.javaio.thread.jcu.collections.entity.Node;
 
-public class PriorityLinkedList<E extends Comparable> {
+public class LinkedList<E> {
 
 	private Node<E> first;
 	private int size;
 
-	public static <E extends Comparable<E>> PriorityLinkedList<E> of(E... elements) {
+	public static <E> LinkedList<E> of(E... elements) {
 		if (elements == null || elements.length < 0)
 			throw new EmptyLinkedListException("use of to set an empty list!!!");
 
-		PriorityLinkedList<E> ret = new PriorityLinkedList<>();
+		LinkedList<E> ret = new LinkedList<>();
 		for (E e : elements)
 			ret.addFirst(e);
 
@@ -40,31 +39,47 @@ public class PriorityLinkedList<E extends Comparable> {
 		return false;
 	}
 
+	/**
+	 * 1:
+	 * first
+	 * [x] -> null   [new]
+	 *
+	 * 2:
+	 *         first
+	 * [new] -> [x] -> null
+	 *
+	 * 3:
+	 * first
+	 * [new] -> [x] -> null
+	 *
+	 * @param e
+	 */
 	public void addFirst(E e) {
-		Node<E> newNode = new Node<>(e);
-
-		if (this.isEmpty())
+		if (this.isEmpty()) {
+			this.first = new Node<>(e);
+		} else {
+			Node<E> newNode = new Node<>(e);
+			newNode.next = this.first;
 			this.first = newNode;
-		else {
-			Node<E> prev = null;
-			Node<E> curr = this.first;
-
-			while (curr != null && curr.getValue().compareTo(e) < 0) {
-				prev = curr;
-				curr = curr.next;
-			}
-
-			if (prev == null) {
-				newNode.next = first;
-				this.first = newNode;
-			} else {
-				prev.next = newNode;
-				newNode.next = curr;
-			}
 		}
 		this.size++;
 	}
 
+	/**
+	 * 1:
+	 * first
+	 * [x] -> [y] ->  null
+	 *
+	 * 2:
+	 * first
+	 * [x]  [y] ->  null
+	 *
+	 * 3:
+	 *      first
+	 * [x]  [y] ->  null
+	 *
+	 * @param e
+	 */
 	public E removeFirst() {
 		if (this.isEmpty())
 			throw new EmptyLinkedListException("EMPTY list...");
