@@ -8,7 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.IntPredicate;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamClient {
@@ -112,6 +115,73 @@ public class StreamClient {
 
     public Stream<SuperApple> createSuperAppleStreamFromGenerate(int size) {
         return Stream.generate(new SuperAppleSupplier()).limit(Math.max(1, size));
+    }
+
+    /**
+     * map(), boxed()
+     */
+    public Stream<Integer> twiceCollection(int[] arr) {
+        return Arrays.stream(arr).map(i -> i + i).boxed();
+    }
+
+    /**
+     * flatMap(), mapToObj(), distinct()
+     */
+    public Stream<Character> uniqueLettersFromStringArray(String[] arr) {
+        //Arrays.stream(arr).map(s -> s.split("")).flatMap(each -> Arrays.stream(each).flatMap(s -> s.chars().mapToObj(i -> (char) i))).distinct();
+        return Arrays.stream(arr).flatMap(s -> s.chars().mapToObj(i -> (char) i)).distinct();
+    }
+
+    /**
+     * anyMatch()
+     */
+    public boolean anyMatchDish(List<Dish> dishes, Predicate<Dish> predicate) {
+        return dishes.stream().anyMatch(predicate);
+    }
+
+    /**
+     * noneMatch()
+     */
+    public boolean noneMatchDishes(List<Dish> dishes, Predicate<Dish> predicate) {
+        return dishes.stream().noneMatch(predicate);
+    }
+
+    /**
+     * allMatch()
+     */
+    public boolean allMatchDishes(List<Dish> dishes, Predicate<Dish> predicate) {
+        return dishes.stream().allMatch(predicate);
+    }
+
+    public int sumCalories(List<Dish> dishes, Predicate<Dish> predicate) {
+        return dishes.stream().filter(predicate).map(Dish::getCalories).reduce(Integer::sum).orElse(0);
+    }
+
+    public Dish[] getCaloriesRanges(List<Dish> dishes, Predicate<Dish> predicate) {
+        List<Dish> list = dishes.stream().filter(predicate).toList();
+        if (list.isEmpty())
+            return null;
+
+        Dish dish = list.get(0);
+        return new Dish[] {
+                list.stream().reduce(dish, (a, b) -> a.getCalories() < b.getCalories() ? a : b),
+                list.stream().reduce(dish, (a, b) -> a.getCalories() > b.getCalories() ? a : b)
+        };
+    }
+
+    /**
+     * int [4 byte|32] vs Integer so int saves space
+     */
+    public int sumIntegerByIntStream(List<Integer> list) {
+        return list.stream().mapToInt(Integer::intValue).sum();
+    }
+
+    public List<int[]> pythagoreanTheorem(int val, int rangeClosed) {
+        return IntStream.rangeClosed(1, rangeClosed).filter(i -> {
+            int target = i * i + val * val;
+            int that = (int) Math.sqrt(target);
+            return target == that * that;
+        }).mapToObj(i -> new int[]{i, val, (int) Math.sqrt((i * i) + (val * val))}).toList();
     }
 
 }

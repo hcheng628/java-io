@@ -9,9 +9,7 @@ import us.hcheng.javaio.java8.entity.Dish;
 import us.hcheng.javaio.java8.entity.SuperApple;
 import us.hcheng.javaio.java8.features.StreamClient;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -135,6 +133,59 @@ class StreamClientTest {
         List<SuperApple> list = stream.toList();
         System.out.println(list);
         assertEquals(size, list.size());
+    }
+
+    @Test
+    void twiceCollectionTest() {
+        int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        List<Integer> list = streamClient.twiceCollection(arr).toList();
+
+        for (int i = 0, len = arr.length; i < len; i++)
+            assertEquals(list.get(i), arr[i] + arr[i]);
+    }
+
+    @Test
+    void uniqueLettersFromStringArrayTest() {
+        String[] arr = new String[]{"Cheng", "Moka", "Apple"};
+        Set<Character> set = new HashSet<>();
+
+        Arrays.stream(arr).forEach(w -> w.chars().forEach(i -> set.add((char) i)));
+        streamClient.uniqueLettersFromStringArray(arr).forEach(each -> assertTrue(set.contains(each)));
+    }
+
+
+    @Test
+    void matchesTest() {
+        assertTrue(streamClient.noneMatchDishes(dishes, d -> d.getCalories() > 900));
+        assertTrue(streamClient.anyMatchDish(dishes, d -> d.getCalories() > 0));
+        assertTrue(streamClient.allMatchDishes(dishes, d -> d.getCalories() > 0));
+    }
+
+    @Test
+    void sumCaloriesTest() {
+        int res = streamClient.sumCalories(dishes, Dish::isVegetarian);
+        assertEquals(1550, res);
+    }
+
+    @Test
+    void Test() {
+        Dish[] info = streamClient.getCaloriesRanges(dishes, d -> true);
+
+        assertNotNull(info);
+        assertEquals(120, info[0].getCalories());
+        assertEquals(800, info[1].getCalories());
+    }
+
+    @Test
+    void sumIntegerByIntStreamTest() {
+        List<Integer> list = dishes.stream().filter(Dish::isVegetarian).map(Dish::getCalories).toList();
+        assertEquals(1550, streamClient.sumIntegerByIntStream(list));
+    }
+
+    @Test
+    void pythagoreanTheoremTest() {
+        List<int[]> res = streamClient.pythagoreanTheorem(9, 100);
+        assertEquals(2, res.size());
     }
 
 }
