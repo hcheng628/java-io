@@ -11,6 +11,8 @@ import java.util.stream.Collector;
 
 public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 
+	private final boolean DEBUG = false;
+
 	@Override
 	public Supplier<List<T>> supplier() {
 		print("supplier...");
@@ -20,7 +22,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 	@Override
 	public BiConsumer<List<T>, T> accumulator() {
 		return (list, element) -> {
-			//print("accumulator..." + list + " adding " + element);
+			print("accumulator..." + list + " adding " + element);
 			list.add(element);
 		};
 	}
@@ -47,10 +49,13 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 	@Override
 	public Set<Characteristics> characteristics() {
 		print("characteristics...");
-		return Set.of(Characteristics.CONCURRENT);
+		return Set.of(Characteristics.UNORDERED);
 	}
 
 	private void print(String msg) {
+		if (!DEBUG)
+			return;
+
 		StringBuilder sb = new StringBuilder("Thread-");
 		sb.append(Thread.currentThread().getName()).append(":").append(msg);
 		sb.append("\nAt:").append(System.currentTimeMillis()).append("\n");

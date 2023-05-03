@@ -41,13 +41,9 @@ class ToListCollectorTest {
 
 	@Test
 	void ToListCollectorTest() {
-		List<Dish> list = dishes.stream().collect(collector);
-		//assertEquals(9, list.size());
+		List<Dish> list = dishes.stream().parallel().collect(collector);
+		assertEquals(900, list.size());
 		assertEquals(LinkedList.class, list.getClass());
-
-
-		for (Dish d : list)
-			System.err.println(d);
 	}
 
 }
