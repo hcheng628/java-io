@@ -1,9 +1,9 @@
-package us.hcheng.javaio.learnhspedu.projects.property_app.view;
+package us.hcheng.javaio.learnhspedu.projects.property.view;
 
-import us.hcheng.javaio.learnhspedu.projects.property_app.entity.House;
-import us.hcheng.javaio.learnhspedu.projects.property_app.entity.Validation;
-import us.hcheng.javaio.learnhspedu.projects.property_app.service.PropertyService;
-import us.hcheng.javaio.learnhspedu.projects.property_app.util.Utils;
+import us.hcheng.javaio.learnhspedu.projects.property.entity.House;
+import us.hcheng.javaio.learnhspedu.projects.property.entity.Validation;
+import us.hcheng.javaio.learnhspedu.projects.property.service.PropertyService;
+import us.hcheng.javaio.learnhspedu.projects.property.util.Utils;
 import java.util.function.Supplier;
 
 public class PropertyView {

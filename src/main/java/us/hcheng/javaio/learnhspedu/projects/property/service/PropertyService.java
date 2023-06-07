@@ -1,6 +1,6 @@
-package us.hcheng.javaio.learnhspedu.projects.property_app.service;
+package us.hcheng.javaio.learnhspedu.projects.property.service;
 
-import us.hcheng.javaio.learnhspedu.projects.property_app.entity.House;
+import us.hcheng.javaio.learnhspedu.projects.property.entity.House;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;

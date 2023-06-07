@@ -1,4 +1,4 @@
-package us.hcheng.javaio.learnhspedu.projects.property_app.entity;
+package us.hcheng.javaio.learnhspedu.projects.property.entity;
 
 import lombok.Data;
 

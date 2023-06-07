@@ -1,6 +1,6 @@
-package us.hcheng.javaio.learnhspedu.projects.property_app.util;
+package us.hcheng.javaio.learnhspedu.projects.property.util;
 
-import us.hcheng.javaio.learnhspedu.projects.property_app.entity.Validation;
+import us.hcheng.javaio.learnhspedu.projects.property.entity.Validation;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.function.BiFunction;
