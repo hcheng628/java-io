@@ -1,8 +1,9 @@
-package us.hcheng.javaio.learnhspedu.tankwar.version2.entity;
+package us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo;
 
 import java.awt.*;
 import java.util.Vector;
 import lombok.Data;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Direction;
 import us.hcheng.javaio.learnhspedu.tankwar.version2.view.GamePanel;
 
 @Data

@@ -1,9 +1,11 @@
-package us.hcheng.javaio.learnhspedu.tankwar.version2.entity;
+package us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo;
 
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
+
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Direction;
 import us.hcheng.javaio.utils.SleepUtil;
 
 public class BotTank extends Tank implements Runnable {

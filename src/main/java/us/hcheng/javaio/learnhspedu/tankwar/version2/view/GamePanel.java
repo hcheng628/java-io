@@ -1,36 +1,69 @@
-package us.hcheng.javaio.learnhspedu.tankwar.version1.view;
+package us.hcheng.javaio.learnhspedu.tankwar.version2.view;
 
-import us.hcheng.javaio.learnhspedu.tankwar.version1.entity.BotTank;
-import us.hcheng.javaio.learnhspedu.tankwar.version1.entity.Direction;
-import us.hcheng.javaio.learnhspedu.tankwar.version1.entity.PlayerTank;
-import us.hcheng.javaio.learnhspedu.tankwar.version1.entity.Tank;
-import javax.swing.*;
+import static us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Constants.NUM_BOT_TANK;
+import static us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Constants.PANEL_HEIGHT;
+import static us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Constants.PANEL_WIDTH;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
 import java.util.stream.IntStream;
+import javax.swing.*;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo.Bomb;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo.BotTank;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Direction;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo.PlayerTank;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo.Missile;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo.Tank;
+import us.hcheng.javaio.utils.SleepUtil;
 
-public class GamePanel extends JPanel {
-    private static final int BOT_TANK_COUNT = 3;
+public class GamePanel extends JPanel implements KeyListener, Runnable {
     private PlayerTank player;
     private Vector<BotTank> tanks;
+    private Vector<Bomb> bombs;
 
     public GamePanel() {
-        player = new PlayerTank(100, 100, 1, Direction.UP, Color.yellow);
+        player = new PlayerTank(100, 100, 5, Direction.UP, Color.yellow);
         tanks = new Vector<>();
-        IntStream.range(0, BOT_TANK_COUNT).forEach(i ->
-                tanks.add(new BotTank((100 * (i + 1)), 0, 1, Direction.DOWN, Color.cyan)));
+        bombs = new Vector<>();
+
+        IntStream.range(0, NUM_BOT_TANK).forEach(i ->
+                tanks.add(new BotTank((100 * (i + 1)), (i + 1) * 10, 5, Direction.DOWN, Color.cyan)));
+
+        tanks.forEach(t -> new Thread(t).start());
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.fillRect(0, 0, 1000, 750);
+        g.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 
         this.drawTank(g, player);
-        tanks.forEach(t -> this.drawTank(g, t));
+        tanks.forEach(t -> {
+            this.drawTank(g, t);
+            this.drawMissiles(g, t.getMissiles());
+        });
+
+        this.drawMissiles(g, player.getMissiles());
+        this.drawBombs(g);
+    }
+
+    private void drawMissiles(Graphics g, Vector<Missile> missiles) {
+        g.setColor(Color.yellow);
+        missiles.forEach(m -> g.fillOval(m.getX(), m.getY(), Missile.SIZE, Missile.SIZE));
+    }
+
+    private void drawBombs(Graphics g) {
+        bombs.forEach(b -> {
+            g.drawImage(b.getImg(), b.getX(), b.getY(), Bomb.SIZE, Bomb.SIZE, this);
+            new Thread(b).start();
+        });
     }
 
     private void drawTank(Graphics g, Tank t) {
+        if (t == null || !t.isAlive())
+            return;
+
         g.setColor(t.getColor());
         int x = t.getX();
         int y = t.getY();
@@ -67,5 +100,58 @@ public class GamePanel extends JPanel {
             default -> System.out.println("暂时没有处理");
         }
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> player.goUp();
+            case KeyEvent.VK_RIGHT -> player.goRight();
+            case KeyEvent.VK_DOWN -> player.goDown();
+            case KeyEvent.VK_LEFT -> player.goLeft();
+            case KeyEvent.VK_SPACE -> player.fire();
+            default -> {}
+        }
+    }
+
+    @Override
+    public void run() {
+        while (player.isAlive()) {
+            SleepUtil.sleep(50);
+            processMissiles();
+            this.repaint();
+        }
+
+        System.err.println("GAME OVER");
+    }
+
+    public static boolean onPanel(int x, int y) {
+        return x > -1 && y > -1 && x < PANEL_WIDTH && y < PANEL_HEIGHT;
+    }
+
+    public static boolean notOnPanel(int x, int y) {
+        return !onPanel(x, y);
+    }
+
+    public void processMissiles() {
+        player.getMissiles().forEach(m -> tanks.forEach(t -> processMissile(m, t)));
+        tanks.forEach(t -> t.getMissiles().forEach(m -> processMissile(m, player)));
+        player.getMissiles().removeIf(s -> !s.isAlive());
+
+        tanks.forEach(t -> t.getMissiles().removeIf(s -> !s.isAlive()));
+        tanks.removeIf(t -> !t.isAlive());
+        bombs.removeIf(t -> !t.isAlive());
+    }
+
+    public void processMissile(Missile m, Tank t) {
+        Bomb bomb = m.hitTank(t);
+        if (bomb != null)
+            bombs.add(bomb);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
 }

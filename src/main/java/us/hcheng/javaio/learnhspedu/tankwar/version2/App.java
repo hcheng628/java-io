@@ -1,10 +1,11 @@
-package us.hcheng.javaio.learnhspedu.tankwar.version1;
+package us.hcheng.javaio.learnhspedu.tankwar.version2;
 
-import us.hcheng.javaio.learnhspedu.tankwar.version1.view.GamePanel;
+import static us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Constants.PANEL_HEIGHT;
+import static us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Constants.PANEL_WIDTH;
 import javax.swing.*;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.view.GamePanel;
 
 public class App extends JFrame {
-
     public static void main(String[] args) {
         new App();
     }
@@ -12,10 +13,11 @@ public class App extends JFrame {
     public App() {
         GamePanel gp = new GamePanel();
         this.add(gp);
-        this.setSize(1000, 750);
-        //this.addKeyListener(gp);
+        this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+        this.addKeyListener(gp);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        new Thread(gp).start();
     }
 
 }

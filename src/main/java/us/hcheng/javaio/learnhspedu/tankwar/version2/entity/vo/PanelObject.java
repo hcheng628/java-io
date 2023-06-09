@@ -1,8 +1,9 @@
-package us.hcheng.javaio.learnhspedu.tankwar.version2.entity;
+package us.hcheng.javaio.learnhspedu.tankwar.version2.entity.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import us.hcheng.javaio.learnhspedu.tankwar.version2.entity.Direction;
 
 @Data
 @AllArgsConstructor
