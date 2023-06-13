@@ -1,16 +1,18 @@
 package us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo;
 
+import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.MISSILE_INIT_SPEED;
 import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Direction.DOWN;
 import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Direction.UP;
 import java.util.Arrays;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.view.GamePanel;
 import us.hcheng.javaio.utils.SleepUtil;
+
 public class Missile extends PanelObject implements Runnable {
 	public static final int SIZE = 5;
 	private final Tank t;
 
 	public Missile(int x, int y, Tank t) {
-		super(x, y, 2, true, t.getDir());
+		super(x, y, MISSILE_INIT_SPEED, true, t.getDir());
 		this.t = t;
 	}
 

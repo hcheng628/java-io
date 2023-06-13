@@ -1,16 +1,16 @@
 package us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo;
 
-import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Direction;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.view.GamePanel;
 import us.hcheng.javaio.utils.SleepUtil;
+
 public class BotTank extends Tank implements Runnable {
     private ThreadLocalRandom rand;
-    public BotTank(GamePanel panel, int x, int y, int speed, Direction dir, Color color) {
-        super(panel, x, y, speed, dir, color);
+    public BotTank(GamePanel panel, int x, int y, Direction dir) {
+        super(panel, x, y, dir);
     }
 
     @Override

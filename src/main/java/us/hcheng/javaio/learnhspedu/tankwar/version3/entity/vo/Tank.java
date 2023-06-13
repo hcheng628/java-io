@@ -1,8 +1,8 @@
 package us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo;
 
+import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.TANK_INIT_SPEED;
 import java.awt.*;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Vector;
 import lombok.Data;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Direction;
@@ -14,10 +14,16 @@ public class Tank extends PanelObject {
     private Color color;
     private Vector<Missile> missiles;
 
-    public Tank(GamePanel panel, int x, int y, int speed, Direction dir, Color color) {
-        super(x, y, speed, true, dir);
+    public Tank(GamePanel panel, int x, int y, Direction dir) {
+        super(x, y, TANK_INIT_SPEED, true, dir);
         this.panel = panel;
-        this.color = color;
+
+        Type type = Type.getType(this);
+        if (type == Type.UNKNOWN)
+            this.color = Color.green;
+        else
+            this.color = type == Type.BOT ? Color.cyan : Color.yellow;
+
         this.missiles = new Vector<>();
     }
 
@@ -130,7 +136,7 @@ public class Tank extends PanelObject {
         }
     }
 
-    public static enum Type {
+    public enum Type {
         PLAYER, BOT, UNKNOWN;
         public static Type getType(Tank t) {
             if (t instanceof PlayerTank)

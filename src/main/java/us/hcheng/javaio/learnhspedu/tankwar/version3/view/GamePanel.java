@@ -1,5 +1,6 @@
 package us.hcheng.javaio.learnhspedu.tankwar.version3.view;
 
+import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.GAME_ON_WAV;
 import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.NUM_BOT_TANK;
 import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.PANEL_HEIGHT;
 import static us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Constants.PANEL_WIDTH;
@@ -9,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
+import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Recorder;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Stats;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo.Bomb;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo.BotTank;
@@ -16,6 +18,7 @@ import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.Direction;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo.PlayerTank;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo.Missile;
 import us.hcheng.javaio.learnhspedu.tankwar.version3.entity.vo.Tank;
+import us.hcheng.javaio.learnhspedu.tankwar.version3.util.PlayWave;
 import us.hcheng.javaio.utils.SleepUtil;
 
 public class GamePanel extends JPanel implements KeyListener, Runnable {
@@ -25,16 +28,21 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
     private Vector<Bomb> bombs;
 
 
-    public GamePanel() {
+    public GamePanel(boolean loadGame) {
         stats = new Stats(0);
-        player = new PlayerTank(this, 500, 500, 5, Direction.UP, Color.yellow);
+        player = new PlayerTank(this, 500, 500, Direction.UP);
         tanks = new Vector<>();
+        Recorder.init(stats, player, tanks);
         bombs = new Vector<>();
 
-        IntStream.range(0, NUM_BOT_TANK).forEach(i ->
-                tanks.add(new BotTank(this, (100 * (i + 1)), (i + 1) * 10, 5, Direction.DOWN, Color.cyan)));
+        if (loadGame)
+            Recorder.loadGame(this);
+        else
+            IntStream.range(0, NUM_BOT_TANK).forEach(i -> tanks.add(new BotTank(this, (100 * (i + 1)), (i + 1) * 10, Direction.DOWN)));
 
         tanks.forEach(t -> new Thread(t).start());
+
+        new PlayWave("/" + GAME_ON_WAV).start();
     }
 
     @Override
@@ -62,7 +70,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         g.setColor(Color.BLACK);
         g.setFont(new Font("宋体", Font.BOLD, 25));
         g.drawString("您累积击毁敌方坦克", 1020, 30);
-        drawTank(g, new BotTank(this, 1020, 60, 0, Direction.UP, Color.cyan));
+        drawTank(g, new BotTank(this, 1020, 60, Direction.UP));
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(stats.getKills()), 1080, 100);
     }
