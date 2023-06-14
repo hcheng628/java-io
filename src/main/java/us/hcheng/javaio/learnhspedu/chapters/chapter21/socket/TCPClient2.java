@@ -1,26 +1,23 @@
 package us.hcheng.javaio.learnhspedu.chapters.chapter21.socket;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import us.hcheng.javaio.learnhspedu.chapters.chapter21.util.IOUtils;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.function.Consumer;
+import static us.hcheng.javaio.learnhspedu.chapters.chapter21.Constants.TCP_SERVER_PORT;
 
 public class TCPClient2 {
 
 	public static void main(String[] args) {
-		final int port = 8866;
-		//doTCPClient(port,TCPClient2::doReaderAndWriter);
-		doTCPClient(port,TCPClient2::doStream);
+//		doTCPClient(TCP_SERVER_PORT,TCPClient2::doReaderAndWriter);
+//		doTCPClient(TCP_SERVER_PORT,TCPClient2::doStream);
+		doTCPClient(TCP_SERVER_PORT, TCPClient2:: sendFile);
 	}
 
 	private static void doTCPClient(int port, Consumer<Socket> consumer) {
-		System.out.println(TCPServer2.class.getSimpleName() + " connecting at " + port);
+		System.out.println("TCP Client is connecting to " + port);
 		try (Socket socket = new Socket(InetAddress.getLocalHost(), port)) {
 			consumer.accept(socket);
 		} catch (IOException ex) {
@@ -30,14 +27,9 @@ public class TCPClient2 {
 
 	private static void doReaderAndWriter(Socket socket) {
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-			bw.write("Hello from Client!" + System.lineSeparator());
-			//bw.newLine();
-			bw.flush();
-			/**
-			 * It needs to flush() and new line if the other end readLine()
-			 */
-			System.out.println("Client Received: " + br.readLine());
+			 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+			IOUtils.pushBWString(bw, "Hello from Client!");
+			System.err.println("Client Received: " + br.readLine());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -45,18 +37,23 @@ public class TCPClient2 {
 
 	private static void doStream(Socket socket) {
 		try (BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
-		     BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream())) {
-			socket.getOutputStream().write("你好呀 from Client".getBytes());
-
-			byte[] buffer = new byte[1024];
-			StringBuilder sb = new StringBuilder();
-			for (int len = -1; (len = is.read(buffer)) != -1; )
-				sb.append(new String(buffer, 0, len));
-
-			System.out.print("Client Received: " + sb);
+			 BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream())) {
+			IOUtils.pushStreamString(socket, os, "你好呀 from Client");
+			System.out.print("Client Received: " + IOUtils.inputStreamToString(is));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	private static void sendFile(Socket socket) {
+		String path = "/Users/nikkima/hc-development/hc-repo/git/java-io/src/main/resources/game_on.wav";
+		try (BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream())) {
+			byte[] data = new FileInputStream(path).readAllBytes();
+			os.write(data);
+			os.flush();
+			System.out.println("File sent");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 }
