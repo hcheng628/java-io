@@ -43,18 +43,36 @@ public class IOUtils {
         }
     }
 
-    public static void pushByteData(Socket socket, ByteArrayOutputStream bos, byte[] data) {
+    public static byte[] inputStreamToByteArr(InputStream is) {
         try {
-            bos.write(data);
-            bos.flush();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+
+            for (int len = -1; (len = is.read(buffer)) != -1; )
+                bos.write(buffer, 0, len);
+
+            return bos.toByteArray();
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    public static void pushByteData(Socket socket, OutputStream os, byte[] data) {
+        try {
+            os.write(data);
+            os.flush();
             socket.shutdownOutput();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public static byte[] readByteData(ByteArrayInputStream bis) {
-        return bis.readAllBytes();
+    public static void makeFile(byte[] data, String path) {
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path))) {
+            bos.write(data);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

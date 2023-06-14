@@ -1,19 +1,22 @@
 package us.hcheng.javaio.learnhspedu.chapters.chapter21.socket;
 
 import us.hcheng.javaio.learnhspedu.chapters.chapter21.util.IOUtils;
-
+import us.hcheng.javaio.learnhspedu.chapters.chapter21.util.PlayWav;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.function.Consumer;
+import static us.hcheng.javaio.learnhspedu.chapters.chapter21.Constants.BASE_PATH;
 import static us.hcheng.javaio.learnhspedu.chapters.chapter21.Constants.TCP_SERVER_PORT;
 
-public class TCPClient2 {
+public class TCPClient {
 
 	public static void main(String[] args) {
-//		doTCPClient(TCP_SERVER_PORT,TCPClient2::doReaderAndWriter);
-//		doTCPClient(TCP_SERVER_PORT,TCPClient2::doStream);
-		doTCPClient(TCP_SERVER_PORT, TCPClient2:: sendFile);
+		doTCPClient(TCP_SERVER_PORT, TCPClient::doReaderAndWriter);
+		doTCPClient(TCP_SERVER_PORT, TCPClient::doStream);
+		doTCPClient(TCP_SERVER_PORT, TCPClient:: sendFile);
+		doTCPClient(TCP_SERVER_PORT, TCPClient:: streamPlay);
 	}
 
 	private static void doTCPClient(int port, Consumer<Socket> consumer) {
@@ -46,14 +49,29 @@ public class TCPClient2 {
 	}
 
 	private static void sendFile(Socket socket) {
-		String path = "/Users/nikkima/hc-development/hc-repo/git/java-io/src/main/resources/game_on.wav";
-		try (BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream())) {
-			byte[] data = new FileInputStream(path).readAllBytes();
-			os.write(data);
-			os.flush();
-			System.out.println("File sent");
+		try (BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream());
+			InputStream is = socket.getInputStream()) {
+			IOUtils.pushByteData(socket, os, IOUtils.inputStreamToByteArr(new FileInputStream(BASE_PATH + "music.wav")));
+			System.out.println("File upload: " + ("success".equals(IOUtils.inputStreamToString(is)) ? " Yes" : " No"));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
+
+	private static void streamPlay(Socket socket) {
+		try (Scanner scanner = new Scanner(System.in);
+		BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+		BufferedInputStream bis = new BufferedInputStream(socket.getInputStream())) {
+			System.out.println("Enter Name: ");
+			String name = scanner.nextLine();
+			IOUtils.pushStreamString(socket, bos, name);
+
+			byte[] data = IOUtils.inputStreamToByteArr(bis);
+			if (data != null)
+				new PlayWav(new ByteArrayInputStream(data)).start();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
 }

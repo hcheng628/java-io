@@ -2,19 +2,20 @@ package us.hcheng.javaio.learnhspedu.chapters.chapter21.socket;
 
 import us.hcheng.javaio.learnhspedu.chapters.chapter21.util.IOUtils;
 import us.hcheng.javaio.learnhspedu.chapters.chapter21.util.PlayWav;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.function.Consumer;
+import static us.hcheng.javaio.learnhspedu.chapters.chapter21.Constants.BASE_PATH;
 import static us.hcheng.javaio.learnhspedu.chapters.chapter21.Constants.TCP_SERVER_PORT;
 
-public class TCPServer2 {
+public class TCPServer {
 
 	public static void main(String[] args) {
-//		doTCPClient(TCP_SERVER_PORT, TCPServer2::doReaderAndWriter);
-//		doTCPClient(TCP_SERVER_PORT, TCPServer2::doStream);
-		doTCPClient(TCP_SERVER_PORT, TCPServer2::processFile);
+		doTCPClient(TCP_SERVER_PORT, TCPServer::doReaderAndWriter);
+		doTCPClient(TCP_SERVER_PORT, TCPServer::doStream);
+		doTCPClient(TCP_SERVER_PORT, TCPServer::processFile);
+		doTCPClient(TCP_SERVER_PORT, TCPServer::sendStreamMedia);
 	}
 
 	private static void doTCPClient(int port, Consumer<Socket> consumer) {
@@ -48,9 +49,24 @@ public class TCPServer2 {
 	}
 
 	private static void processFile(Socket socket) {
-		try (BufferedInputStream is = new BufferedInputStream(socket.getInputStream())) {
-			byte[] data = is.readAllBytes();
+		try (BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
+			OutputStream os = socket.getOutputStream()) {
+			byte[] data = IOUtils.inputStreamToByteArr(is);
+
+			IOUtils.makeFile(data, BASE_PATH + "music.wav");
+
 			new PlayWav(new ByteArrayInputStream(data)).start();
+			IOUtils.pushStreamString(socket, os, "success");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private static void sendStreamMedia(Socket socket) {
+		try (BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
+		     OutputStream os = socket.getOutputStream()) {
+			String name = "game".equals(IOUtils.inputStreamToString(is)) ? "game_on.wav" : "music.wav";
+			IOUtils.pushByteData(socket, os, IOUtils.inputStreamToByteArr(new FileInputStream(BASE_PATH + name)));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
