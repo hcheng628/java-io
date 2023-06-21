@@ -20,8 +20,13 @@ public class Msg implements Serializable {
 		this.type = type;
 	}
 
+	public Msg(String content, MsgType type) {
+		this.content = content;
+		this.type = type;
+	}
+
 	public enum MsgType {
-		FILE, MSG, MSG_ALL, LOGIN, LOGIN_FAIL, LOGOUT, ONLINE_FRIENDS,
+		FILE, MSG, MSG_ALL, LOGIN, LOGIN_FAIL, LOGOUT, ONLINE_FRIENDS, BROADCAST
 	}
 
 }

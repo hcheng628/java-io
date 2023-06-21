@@ -2,10 +2,8 @@ package us.hcheng.javaio.learnhspedu.chapters.qq.client.service;
 
 import static us.hcheng.javaio.learnhspedu.chapters.qq.common.entity.Constants.TCP_PORT;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
-import us.hcheng.javaio.learnhspedu.chapters.qq.common.util.SocketUtil;
 
 public class SocketService {
 	private static Socket socket;

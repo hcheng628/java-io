@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SocketMgtService {
 
-	public static ConcurrentHashMap<String, ServerClientMgtService> map = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<String, ServerClientMgtService> map = new ConcurrentHashMap<>();
 
 	public static void addUser(String username, ServerClientMgtService clientMgtService) {
 		map.put(username, clientMgtService);

@@ -13,7 +13,7 @@ public class SocketUtil {
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			oos.writeObject(msg);
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			System.err.println(String.join(" ", "Failed to sendMsg", Thread.currentThread().getName(), ex.getMessage()));
 		}
 	}
 
@@ -22,7 +22,7 @@ public class SocketUtil {
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			return ois.readObject();
 		} catch (ClassNotFoundException | IOException ex) {
-			ex.printStackTrace();
+			System.err.println(String.join(" ", "Failed to getMsg", Thread.currentThread().getName(), ex.getMessage()));
 			return null;
 		}
 	}
