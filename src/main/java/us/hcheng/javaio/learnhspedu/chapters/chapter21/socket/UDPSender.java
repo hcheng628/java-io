@@ -28,7 +28,7 @@ public class UDPSender {
 
 	private static void sendFile() {
 		try (DatagramSocket socket = new DatagramSocket()) {
-			FileInputStream fis = new FileInputStream(BASE_PATH + "music.wav");
+			FileInputStream fis = new FileInputStream(BASE_PATH + "tank-war/music.wav");
 			byte[] buffer = new byte[4096 * 10];
 			for (int len = -1; (len = fis.read(buffer)) != -1; )
 				socket.send(new DatagramPacket(buffer, 0, len, InetAddress.getByName("127.0.0.1"), UDP_SERVER_PORT));

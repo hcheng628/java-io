@@ -18,7 +18,7 @@ public class Statements {
 
 	/**     SQL Injection... ;-(        */
 	public static void doStatement(String name, String pwd) {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			Statement statement = conn.createStatement();
 			processResultSet(statement.executeQuery("select * from hsp_user where name = '" + name + "' and pwd = '" + pwd + "'"));
 			statement.close();
@@ -29,7 +29,7 @@ public class Statements {
 
 	/**     NO SQL Injection... ;-)     */
 	public static void doPreparedStatement(String name, String pwd) {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement("select * from hsp_user where name = ? and pwd = ?");
 			statement.setObject(1, name);
 			statement.setObject(2, pwd);

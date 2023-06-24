@@ -53,7 +53,7 @@ public class TCPServer {
 			OutputStream os = socket.getOutputStream()) {
 			byte[] data = IOUtils.inputStreamToByteArr(is);
 
-			IOUtils.makeFile(data, BASE_PATH + "music.wav");
+			IOUtils.makeFile(data, BASE_PATH + "tank-war/music.wav");
 
 			new PlayWav(new ByteArrayInputStream(data)).start();
 			IOUtils.pushStreamString(socket, os, "success");
@@ -65,7 +65,7 @@ public class TCPServer {
 	private static void sendStreamMedia(Socket socket) {
 		try (BufferedInputStream is = new BufferedInputStream(socket.getInputStream());
 		     OutputStream os = socket.getOutputStream()) {
-			String name = "game".equals(IOUtils.inputStreamToString(is)) ? "game_on.wav" : "music.wav";
+			String name = "game".equals(IOUtils.inputStreamToString(is)) ? "tank-war/game_on.wav" : "tank-war/music.wav";
 			IOUtils.pushByteData(socket, os, IOUtils.inputStreamToByteArr(new FileInputStream(BASE_PATH + name)));
 		} catch (IOException ex) {
 			ex.printStackTrace();

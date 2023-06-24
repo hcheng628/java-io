@@ -51,7 +51,7 @@ public class TCPClient {
 	private static void sendFile(Socket socket) {
 		try (BufferedOutputStream os = new BufferedOutputStream(socket.getOutputStream());
 			InputStream is = socket.getInputStream()) {
-			IOUtils.pushByteData(socket, os, IOUtils.inputStreamToByteArr(new FileInputStream(BASE_PATH + "music.wav")));
+			IOUtils.pushByteData(socket, os, IOUtils.inputStreamToByteArr(new FileInputStream(BASE_PATH + "tank-war/music.wav")));
 			System.out.println("File upload: " + ("success".equals(IOUtils.inputStreamToString(is)) ? " Yes" : " No"));
 		} catch (IOException ex) {
 			ex.printStackTrace();

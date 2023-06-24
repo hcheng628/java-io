@@ -25,7 +25,7 @@ public class JDBCTransaction {
 		PreparedStatement s1 = null;
 		PreparedStatement s2 = null;
 
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			s1 = conn.prepareStatement(SQL1);
 			System.out.println("Transfered " + (s1.executeUpdate() > 0 ? "succeed" : "failed") );
 
@@ -47,7 +47,7 @@ public class JDBCTransaction {
 	}
 
 	private static void transaction(boolean exception) {
-		Connection conn = DBUtil.getConnection();
+		Connection conn = DBUtil.ConnectionUtil.getConnection();
 		if (conn == null)
 			return;
 

@@ -1,0 +1,17 @@
+<c3p0-config>
+    <!-- 数据源名称代表连接池 -->
+    <named-config name="hspedu">
+        <property name="driverClass">org.mariadb.jdbc.Driver</property>
+        <property name="jdbcUrl">jdbc:mariadb://192.168.31.21:3306/hspedu</property>
+        <property name="user">root</property>
+        <property name="password">admin</property>
+        <property name="acquireIncrement">5</property>
+        <property name="initialPoolSize">10</property>
+        <property name="minPoolSize">5</property>
+        <property name="maxPoolSize">50</property>
+        <!-- 可连接的最多的命令对象数 -->
+        <property name="maxStatements">5</property>
+        <!-- 每个连接对象可连接的最多的命令对象数 -->
+        <property name="maxStatementsPerConnection">2</property>
+    </named-config>
+</c3p0-config>

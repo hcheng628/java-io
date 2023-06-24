@@ -20,7 +20,7 @@ public class PreparedStatementExec1 {
 	}
 
 	private void inserts() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement("insert into hsp_user values(?, ?, ?)");
 			for (int i = 2; i < 7; i++) {
 				statement.setObject(1, i * 100);
@@ -34,7 +34,7 @@ public class PreparedStatementExec1 {
 	}
 
 	private void update() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement("update hsp_user set pwd = ? where id = ?");
 			statement.setObject(1, "pwd-moka");
 			statement.setObject(2, "200");
@@ -45,7 +45,7 @@ public class PreparedStatementExec1 {
 	}
 
 	private void delete() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement("delete from hsp_user where id = ?");
 			statement.setObject(1, "300");
 			System.out.println(statement.executeUpdate() > 0);
@@ -55,7 +55,7 @@ public class PreparedStatementExec1 {
 	}
 
 	private void query() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement("select * from hsp_user");
 			ResultSet res = statement.executeQuery();
 			ResultSetMetaData metaData = res.getMetaData();

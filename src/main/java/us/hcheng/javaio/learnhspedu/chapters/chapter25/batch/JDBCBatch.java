@@ -25,7 +25,7 @@ public class JDBCBatch {
 
 
 	public static void batch() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement(SQL);
 			for (int i = 1; i <= LIMIT; i++) {
 				statement.setObject(1, i);
@@ -45,7 +45,7 @@ public class JDBCBatch {
 	}
 
 	public static void noBatch() {
-		try (Connection conn = DBUtil.getConnection()) {
+		try (Connection conn = DBUtil.ConnectionUtil.getConnection()) {
 			for (int i = 1; i <= LIMIT; i++) {
 				PreparedStatement statement = conn.prepareStatement(SQL);
 				statement.setObject(1, i);

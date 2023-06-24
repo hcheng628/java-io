@@ -10,9 +10,9 @@ public class Bomb extends PanelObject implements Runnable {
 	public static final int SIZE = 60;
 
 	private static Image[] imgs = new Image[]{
-			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/bomb_1.gif")),
-			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/bomb_2.gif")),
-			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/bomb_3.gif"))
+			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/tank-war/bomb_1.gif")),
+			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/tank-war/bomb_2.gif")),
+			Toolkit.getDefaultToolkit().getImage(Bomb.class.getResource("/tank-war/bomb_3.gif"))
 	};
 
 	public Bomb(int x, int y) {

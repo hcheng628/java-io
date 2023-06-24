@@ -1,13 +1,17 @@
-package us.hcheng.javaio.learnhspedu.chapters.chapter25.util;
+package us.hcheng.javaio.learnhspedu.chapters.chapter25.daodesign.util;
 
-import static us.hcheng.javaio.learnhspedu.chapters.chapter25.constant.Constants.*;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+
 import javax.sql.DataSource;
 import java.io.FileInputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.IntStream;
+
+import static us.hcheng.javaio.learnhspedu.chapters.chapter25.constant.Constants.*;
 
 public class DBUtil {
 
