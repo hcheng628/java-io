@@ -1,9 +1,7 @@
 package us.hcheng.javaio.learnhspedu.chapters.projects.tankwar.version3.entity.vo;
 
 import static us.hcheng.javaio.learnhspedu.chapters.projects.tankwar.version3.entity.Constants.MISSILE_INIT_SPEED;
-
 import java.util.Arrays;
-
 import us.hcheng.javaio.learnhspedu.chapters.projects.tankwar.version3.entity.Direction;
 import us.hcheng.javaio.learnhspedu.chapters.projects.tankwar.version3.view.GamePanel;
 import us.hcheng.javaio.utils.SleepUtil;
@@ -39,10 +37,10 @@ public class Missile extends PanelObject implements Runnable {
 	public void run() {
 		while (isAlive()) {
 			switch (getDir()) {
-				case Direction.UP -> this.goUp();
-				case Direction.LEFT -> this.goLeft();
-				case Direction.DOWN -> this.goDown();
-				case Direction.RIGHT -> this.goRight();
+				case UP -> this.goUp();
+				case LEFT -> this.goLeft();
+				case DOWN -> this.goDown();
+				case RIGHT -> this.goRight();
 			}
 
 			if (GamePanel.notOnPanel(getX(), getY()))

@@ -38,10 +38,10 @@ public class Missile extends PanelObject implements Runnable {
 	public void run() {
 		while (isAlive()) {
 			switch (getDir()) {
-				case Direction.UP -> this.goUp();
-				case Direction.LEFT -> this.goLeft();
-				case Direction.DOWN -> this.goDown();
-				case Direction.RIGHT -> this.goRight();
+				case UP -> this.goUp();
+				case LEFT -> this.goLeft();
+				case DOWN -> this.goDown();
+				case RIGHT -> this.goRight();
 			}
 
 			if (GamePanel.notOnPanel(getX(), getY()))
