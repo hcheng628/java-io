@@ -1,6 +1,7 @@
 package us.hcheng.javaio.learnhspedu.chapters.chapter27;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
 
@@ -12,4 +13,17 @@ public class Util {
 			System.out.println();
 		}
 	}
+
+	public static void processMatching(Matcher matcher, String... names) {
+		for (int count = 1; matcher.find(); count++) {
+			for (String n : names)
+				System.out.println("找到: " + count + " group " + n + ": " + matcher.group(n));
+			System.out.println();
+		}
+	}
+
+	public static Matcher getMatcher(String txt, String regExp) {
+		return Pattern.compile(regExp).matcher(txt);
+	}
+
 }
