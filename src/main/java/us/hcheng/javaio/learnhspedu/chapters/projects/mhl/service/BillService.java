@@ -4,7 +4,9 @@ import us.hcheng.javaio.learnhspedu.chapters.projects.mhl.dao.BillDao;
 import us.hcheng.javaio.learnhspedu.chapters.projects.mhl.entity.Bill;
 import us.hcheng.javaio.learnhspedu.chapters.projects.mhl.entity.DiningTable;
 import us.hcheng.javaio.learnhspedu.chapters.projects.mhl.entity.Menu;
-
+import us.hcheng.javaio.learnhspedu.chapters.projects.mhl.util.DBUtil;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,8 +52,31 @@ public class BillService {
 
     public boolean payBill(int tableId, String paymentType) {
         //如果这里使用事务的话，需要用ThreadLocal来解决 , 框架中比如mybatis 提供了事务支持
-        return billDao.execute("update bill set state = ? where diningTableId = ?  and state='未结账'", paymentType, tableId) > 0
-                && tableService.freeDiningTableById(tableId);
+        Connection conn = DBUtil.getConnection();
+        if (conn == null)
+            return false;
+
+        try {
+            conn.setAutoCommit(false);
+
+            if (billDao.execute("update bill set state = ? where diningTableId = ?  and state='未结账'", paymentType, tableId) > 0
+                    && tableService.freeDiningTableById(tableId)) {
+                conn.commit();
+                return true;
+            }
+
+            conn.rollback();
+            return false;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("rollback had issue...");
+            }
+            throw new RuntimeException(e);
+        } finally {
+            DBUtil.close(conn);
+        }
     }
 
 }
